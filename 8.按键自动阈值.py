@@ -134,3 +134,4 @@ while(True):
 
     pin_IN(pin_num)#设置GPIO引脚输入
     handle_buttons(img)#处理按钮按键响应
+    
