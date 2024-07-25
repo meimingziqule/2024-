@@ -13,10 +13,18 @@
 #1. 1-4分别为x,y,w,h的增加按键
 #2. 1，2一起按切换“--”模式，再次1,2一起按切换回“++”模式
 #3. 按键3,4切换为自动阈值模式，按键1,2,3,4为二值化图像预览
-
+import sensor, image, time, pyb, math,display
+from pyb import UART, LED, Pin, Timer
+import math
+sensor.reset()
+sensor.set_vflip(True)
+sensor.set_hmirror(True)
+sensor.set_pixformat(sensor.RGB565)
+sensor.set_framesize(sensor.QQVGA2)
+sensor.skip_frames(time = 2000)
 pin_value = [1,1,1,1,1,1,1,1]  # 0 1 0 1  高低电平设置，与pin一一对应
 pin_num = [0,1,2,3,6,7,8,9]  #pin口选择
-jia_jian_flag = 0#手动阈值加减模式切换标志位，包含roi模式切换标志位
+jia_jian_flag = 0#手动阈值加减模式切换标志位，包含roi模式切换标志位 
 red_thresholds_num = [0, 100, 38, 77, 5, 69]
 #roi
 roi_change_step  = 2#roi变化步长
@@ -131,7 +139,8 @@ def pin_IN(pin_num):
         pin_value[i] = p_in.value()
 
 while(True):
-
+    img = sensor.snapshot()
+    img = img.rotation_corr(180)
     pin_IN(pin_num)#设置GPIO引脚输入
     handle_buttons(img)#处理按钮按键响应
     
